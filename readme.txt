@@ -1,0 +1,1 @@
+This is the code example to use the the till hardware of Vicki I on the Comodore C256 FMX
