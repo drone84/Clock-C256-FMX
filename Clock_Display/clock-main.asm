@@ -110,18 +110,20 @@ GAME_START
             LDA #0
             STA BMP_POSITION_X
             STA BMP_POSITION_Y
-
-            LDA #>TILES_NB
+            ; load the BMP file source adressv and BMP decoded destination address
+            LDA #>TILES_NB        ; TILES_NB[0]
             STA BMP_PRSE_SRC_PTR
             STA BMP_PRSE_DST_PTR
-            LDA #<TILES_NB
+            LDA #<TILES_NB        ; TILES_NB[1]
             STA BMP_PRSE_SRC_PTR+1
             STA BMP_PRSE_DST_PTR+1
-            LDA #`TILES_NB
+            LDA #`TILES_NB        ; TILES_NB[2]
             STA BMP_PRSE_SRC_PTR+2
             LDA #`TILES_NB + $20000 ; write the result on the next page
             STA BMP_PRSE_DST_PTR+2
 
+            ; Parse the BMP file to extract the data in a Byte array
+            ; of the picture resolution whide*hight*bpp (byte per pixel)
             JSL IBMP_PARSER
 
             setas
@@ -129,6 +131,8 @@ GAME_START
             AND #$EF
             STA $AFE880
             setxl
+            ; will load the picture tile set and colour palet in vram as well
+            ; as drawing the clock and seting up the timer
             JSR INIT_DISPLAY
 
             ; Enable SOF
